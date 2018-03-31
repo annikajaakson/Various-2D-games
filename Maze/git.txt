@@ -1,0 +1,49 @@
+Repod teeme Allaniga ja jagame neid teistega. 
+Jagamine:
+https://help.github.com/articles/inviting-collaborators-to-a-personal-repository/
+
+Tunniks:
+Mis on git? Git on süsteem, mis võimaldab mitmel programmeerijal koos arendada sama projekti.
+Pm netis on kaust, kus on kõik projekti failid ja igal programmeerijal on oma arvutis kloon sellest kaustast, mis on giti kaudu ühendatud repoga. Niimoodi saab oma arvutis tehtud
+muudatused lihtsalt üles laadida ja teiste tehtud muudatused lihtsalt alla laadida.
+
+REEGLID:
+1) Kaks inimest ei muuda kahes eri arvutis sama faili!!!
+2) Commitimisel kirjutad alati, mida sa muutsid
+
+Giti allalaadimine:
+https://git-scm.com/download/win
+
+Lase Githubi kasutajad teha
+Tehku endale mingi repository
+git clone
+
+Pangu midagi reposse
+git add --all või git add filename
+git commit + message
+git push
+
+Repost koodi allatõmbamine:
+git pull
+
+Kasulikku:
+1) Repo olemasoleva koodi jaoks:
+	cd existing_project/
+	git init
+
+2) Update and merge your current branch with a remote
+	git pull origin master
+
+	Ilma merge'ta:
+	git fetch
+
+3) See differences between local changes and master
+	git diff origin/master
+
+4) git status
+
+Source:
+https://orga.cat/posts/most-useful-git-commands
+
+Probleem: git Windowsis???
+Vim???

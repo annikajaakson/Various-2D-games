@@ -1,6 +1,7 @@
 import pygame
 from constants import *
 
+
 class Player():
     def __init__(self, x, y, color):
         self.x = x
@@ -15,6 +16,7 @@ class Player():
         pygame.draw.rect(screen, self.color, self.shape)
 
     def event_handle(self, event):
+        # Change direction if A/LEFT or D/RIGHT is pressed
         if event.type == pygame.KEYDOWN:
             if event.key == pygame.K_a or event.key == pygame.K_LEFT:
                 if self.direction == 0:
@@ -25,12 +27,14 @@ class Player():
                     self.direction = 2
                     self.speed = 5
 
+        # If A/LEFT or D/RIGHT is released, change direction back to 0
         elif event.type == pygame.KEYUP:
             if event.key == pygame.K_a or event.key == pygame.K_LEFT:
                 self.direction = 0
             elif event.key == pygame.K_d or event.key == pygame.K_RIGHT:
                 self.direction = 0
 
+    # Collision doesn't work yet
     # def collide(self, targets):
     #     for target in targets:
     #         if target.index == 1:
@@ -44,6 +48,7 @@ class Player():
     #                     / ((t_shape[1][1] - t_shape[2][1]) * (t_shape[0][0] - t_shape[2][0]) + (t_shape[2][0] - t_shape[1][0]) * (t_shape[0][1] - t_shape[2][1]))
 
     def update(self):
+        # Move according to direction
         if self.direction == 1:
             if (self.x - self.speed) >= BASEWIDTH:
                 self.x -= self.speed

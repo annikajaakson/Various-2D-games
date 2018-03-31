@@ -1,5 +1,3 @@
-import pygame
-
 SCREEN = (300, 600)
 BASEWIDTH = 40
 SIZE = 50
