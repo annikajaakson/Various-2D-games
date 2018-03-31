@@ -5,11 +5,12 @@ import org.newdawn.slick.geom.*;
 import java.util.ArrayList;
 
 public class Map {
-	ArrayList<ArrayList> maplist;
+	ArrayList<ArrayList> maplist; // Dynamic size list to hold map structure
 	public int count = 0;
 	public boolean full;
 	public int disappear; //probably not necessary
 	
+	// Initialize map
 	public Map(ArrayList<ArrayList> _maplist) {
 		maplist = _maplist;
 		for (int i = 0; i < Tetris.screenH/Tetris.block; i++){
@@ -28,11 +29,13 @@ public class Map {
 					full = false;
 				}
 			}
+			
+			// Clear a full row
 			if (full == true) {
 				for (int i = 0; i < maplist.get(a).size(); i++) {
 					maplist.get(a).set(i, "0");
 				}
-				disappear = a; //pole ilmselt vajalik muutuja
+				disappear = a; //unnecessary variable
 				
 				for (int k = 0; k < disappear; k++) { //makes pieces fall after a row disappears
 					maplist.set(disappear-k, maplist.get(disappear-k-1));
@@ -55,6 +58,7 @@ public class Map {
 	}
 	
 	public void render(GameContainer gc, Graphics g) {
+		// Draw map to screen, rectangle by rectangle
 		for (int i = 0; i<maplist.size(); i++) {
 			for (int a = 0; a<20; a++) {
 				if (maplist.get(i).get(a) == "0") {

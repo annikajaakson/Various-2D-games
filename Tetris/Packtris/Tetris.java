@@ -30,6 +30,7 @@ public class Tetris extends BasicGame {
 	}
 	
 	public void init(GameContainer gc) throws SlickException {
+		// Initialize map and active piece
 		activepiece = new Piece(9, 0, (int)(Math.random()*4), activelego, activemap);
 		structmap = new Map(activemap);
 	}
@@ -37,6 +38,7 @@ public class Tetris extends BasicGame {
 	public void update(GameContainer gc, int delta) throws SlickException {
 		activepiece.update(gc, delta);
 		if (stop == true) {
+			//Create a new piece if previous one stopped moving
 			activepiece = new Piece(9, 0, (int)(Math.random()*4), activelego, activemap);
 			stop = false;
 		}
