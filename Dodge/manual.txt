@@ -1,0 +1,5 @@
+This game is currently incomplete, the collision with obstacles is not implemented.
+
+Description:
+The player controls a yellow box and must try to avoid colliding with green obstacles on the way.
+Move left and right with A and D or  with left and right arrows. Use W or up arrow for speed-up.
