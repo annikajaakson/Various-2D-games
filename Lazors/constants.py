@@ -1,0 +1,45 @@
+MENU = 0
+LEVEL_RAND = 1
+INSTR = 2
+EXIT = 3
+
+SCREEN_W = 800
+SCREEN_H = 600
+
+GRID_W = 10
+GRID_H = 10
+
+TILE_SIZE = 40
+TILE_GAP = 4
+TILE_START = (int((SCREEN_W - GRID_W * TILE_SIZE) / 2), int((SCREEN_H - GRID_H * TILE_SIZE) / 2))
+TILE_END = (int(TILE_START[0] + GRID_W * TILE_SIZE), int(TILE_START[1] + GRID_H * TILE_SIZE))
+TILESTACK_LOCATION = [(SCREEN_W - GRID_W * TILE_SIZE)/4 - TILE_SIZE, SCREEN_H/2 - TILE_SIZE/2]
+
+MENU_BUTTON_W = 300
+MENU_BUTTON_H = 100
+MENU_BUTTON_GAP = 20
+MENU_START = ((SCREEN_W - MENU_BUTTON_W) / 2, (SCREEN_H - MENU_BUTTON_H * 3 - MENU_BUTTON_GAP * 2) / 2)
+
+BG_COLOR = (30, 30, 30)
+TILE_UNOCCUPIED_COLOR = (100, 100, 100)
+TILE_OCCUPIED_COLOR = (200, 200, 200)
+LAZOR_COLOR = (200, 20, 20)
+CHECKPOINT_COLOR = (150, 150, 150)
+
+LAZORHEAD_RADIUS = 10
+LAZOR_THICKNESS = 5
+
+# Laser ray direction
+NW = 1
+NE = 2
+SE = 3
+SW = 4
+
+RAY_ENDLESS = 0
+RAY_ENDING = 1
+
+# TODO: fix endless ray bug, also with start in spawn location
+# TODO: laserpoint under tile
+# TODO: Show instructions
+# TODO: Actual levels
+# TODO: Winning the level (all laserpoints passed)
