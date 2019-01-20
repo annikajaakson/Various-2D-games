@@ -4,7 +4,7 @@ from math import *
 from random import randint
 
 
-class Basemap():
+class Basemap:
     def __init__(self, x, y, w, h, color):
         self.x = x
         self.y = y
@@ -17,7 +17,7 @@ class Basemap():
         pygame.draw.rect(screen, self.color, self.shape)
 
 
-class Ornaments():
+class Ornaments:
     def __init__(self, x, y, index, color):
         self.x = x
         self.y = y

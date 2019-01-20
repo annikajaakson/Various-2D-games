@@ -43,18 +43,23 @@ class FreeTile:
 
 
 class Map:
-    def __init__(self):
+    def __init__(self, checkcoords=None):
         self.grid = [[0 for i in range(GRID_W)] for j in range(GRID_H)]
         self.freetile = None
+        self.checkcoords = checkcoords
         self.checkpoints = []
 
-        for nr_of_checkpoints in range(randint(1, 5)):
-            checkpoint_x = randint(0, 20) / 2
-            if (checkpoint_x / 0.5) % 2:
-                checkpoint_y = randint(0, 10)
-            else:
-                checkpoint_y = randint(0, 9) + 0.5
-            self.checkpoints.append(Checkpoint(checkpoint_x, checkpoint_y))
+        if checkcoords:
+            for cp in checkcoords:
+                self.checkpoints.append(Checkpoint(cp[0], cp[1]))
+        else:
+            for nr_of_checkpoints in range(randint(1, 5)):
+                checkpoint_x = randint(0, 20) / 2
+                if (checkpoint_x / 0.5) % 2:
+                    checkpoint_y = randint(0, 10)
+                else:
+                    checkpoint_y = randint(0, 9) + 0.5
+                self.checkpoints.append(Checkpoint(checkpoint_x, checkpoint_y))
 
     def update(self, mousedown, lazor, tilestack):
         # If mouse is pressed and no free tile is being held
@@ -66,9 +71,11 @@ class Map:
             and self.grid[int(mouse_pos_grid[1])][int(mouse_pos_grid[0])] != 0:
                 self.grid[int(mouse_pos_grid[1])][int(mouse_pos_grid[0])] = 0
                 self.freetile = FreeTile(mouse_pos_pixel, fromstack=False)
-            elif tilestack.x < mouse_pos_pixel[0] < tilestack.x + TILE_SIZE \
+            elif tilestack.nr_of_tiles > 0 \
+            and tilestack.x < mouse_pos_pixel[0] < tilestack.x + TILE_SIZE \
             and tilestack.y < mouse_pos_pixel[1] < tilestack.y + TILE_SIZE:
                 self.freetile = FreeTile(mouse_pos_pixel, fromstack=True)
+                tilestack.nr_of_tiles -= 1
 
         # If mouse is released and the free tile is being held
         elif not mousedown:
@@ -77,7 +84,7 @@ class Map:
 
                 if self.freetile.fromstack \
                 and (tile_pos[0] < 0 or tile_pos[0] > GRID_W or tile_pos[1] < 0 or tile_pos[1] > GRID_H):
-                    pass
+                    tilestack.nr_of_tiles += 1
                 else:
                     if (tile_pos[0] < 0 or tile_pos[0] > GRID_W or tile_pos[1] < 0 or tile_pos[1] > GRID_H) \
                     or self.grid[int(tile_pos[1])][int(tile_pos[0])] != 0:
@@ -91,7 +98,7 @@ class Map:
                     checkpoint_loc = pixel_to_grid(checkpoint.location)
                     checkpoint.__init__(checkpoint_loc[0], checkpoint_loc[1])
                 lazor.created = False
-                lazor.__init__()
+                lazor.__init__(lazor.spawn_location, lazor.orig_direction)
 
         # Update free tile if it exists
         if self.freetile:
@@ -99,10 +106,11 @@ class Map:
                 checkpoint_loc = pixel_to_grid(checkpoint.location)
                 checkpoint.__init__(checkpoint_loc[0], checkpoint_loc[1])
             lazor.created = False
-            lazor.__init__()
+            lazor.__init__(lazor.spawn_location, lazor.orig_direction)
             self.freetile.update()
 
-    def draw(self, screen):
+    def draw_grid(self, screen):
+        # Draw unoccupied tiles on screen
         for tile_y in range(GRID_H):
             for tile_x in range(GRID_W):
                 # Locate current rectangle according to TILE_START and x & y coordinates
@@ -113,13 +121,24 @@ class Map:
 
                 if self.grid[tile_y][tile_x] == 0:
                     pygame.draw.rect(screen, TILE_UNOCCUPIED_COLOR, current_rect)
-                elif self.grid[tile_y][tile_x] == 1:
+
+        # Draw checkpoints on screen
+        for checkpoint in self.checkpoints:
+            checkpoint.draw(screen)
+
+    def draw_tiles(self, screen):
+        # Draw occupied tiles on screen
+        for tile_y in range(GRID_H):
+            for tile_x in range(GRID_W):
+                # Locate current rectangle according to TILE_START and x & y coordinates
+                current_rect = [TILE_START[0] + TILE_SIZE * tile_x + TILE_GAP / 2,
+                                TILE_START[1] + TILE_SIZE * tile_y + TILE_GAP / 2,
+                                TILE_SIZE - TILE_GAP,
+                                TILE_SIZE - TILE_GAP]
+
+                if self.grid[tile_y][tile_x] == 1:
                     pygame.draw.rect(screen, TILE_OCCUPIED_COLOR, current_rect)
 
         # Draw the tile being held if it exists
         if self.freetile:
             self.freetile.draw(screen)
-
-        # Draw checkpoints on screen
-        for checkpoint in self.checkpoints:
-            checkpoint.draw(screen)

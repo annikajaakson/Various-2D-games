@@ -1,5 +1,6 @@
 import pygame
 from constants import *
+from helper_functions import *
 
 
 class Player():
@@ -10,6 +11,8 @@ class Player():
         self.shape = pygame.Rect([self.x, self.y, PLAYER_SIZE, PLAYER_SIZE])
         self.speed = 0
         self.direction = 0
+        self.lives = 1
+        self.collided = False
 
     def draw(self, screen):
         self.shape = pygame.Rect([self.x, self.y, PLAYER_SIZE, PLAYER_SIZE])
@@ -34,20 +37,37 @@ class Player():
             elif event.key == pygame.K_d or event.key == pygame.K_RIGHT:
                 self.direction = 0
 
-    # Collision doesn't work yet
-    # def collide(self, targets):
-    #     for target in targets:
-    #         if target.index == 1:
-    #             for t_shape in target.shapes:
-    #                 if self.shape.colliderect(t_shape):
-    #                     return True
-    #         elif target.index == 2:
-    #             for t_shape in target.shapes:
-    #                 for point in [[self.x, self.y], [self.x + PLAYER_SIZE, self.y], [self.x, self.y + PLAYER_SIZE], [self.x + PLAYER_SIZE, self.y + PLAYER_SIZE]]
-    #                     collision1 = ((t_shape[1][1] - t_shape[2][1]) * (point[0] - t_shape[2][0]) + (t_shape[2][0] - t_shape[1][0]) * (point[1] - t_shape[2][1]))\
-    #                     / ((t_shape[1][1] - t_shape[2][1]) * (t_shape[0][0] - t_shape[2][0]) + (t_shape[2][0] - t_shape[1][0]) * (t_shape[0][1] - t_shape[2][1]))
+    # Check if player rectangle collides with obstacles
+    def collide(self, targets):
+        for target in targets:
+            if target.index == 1 or target.index == 3:
+                for t_shape in target.shapes:
+                    if self.shape.colliderect(t_shape):
+                        return True
 
-    def update(self):
+            elif target.index == 2 or target.index == 4:
+                for t_shape in target.shapes:
+                    for point in t_shape:
+                        if self.x < point[0] < self.x + PLAYER_SIZE \
+                        and self.y < point[1] < self.y + PLAYER_SIZE:
+                            return True
+
+                for point in [[self.x, self.y], [self.x + PLAYER_SIZE, self.y],
+                              [self.x, self.y + PLAYER_SIZE], [self.x + PLAYER_SIZE, self.y + PLAYER_SIZE]]:
+                    for t_shape in target.shapes:
+                        if point_inside_triangle(t_shape[0], t_shape[1], t_shape[2], point):
+                            return True
+
+    def update(self, targets):
+        collision = self.collide(targets)
+        if collision and not self.collided:
+            self.lives -= 1
+            self.collided = True
+            if self.lives == 0:
+                self.direction = 0
+        elif not collision and self.collided:
+            self.collided = False
+
         # Move according to direction
         if self.direction == 1:
             if (self.x - self.speed) >= BASEWIDTH:

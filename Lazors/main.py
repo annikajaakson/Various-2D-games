@@ -31,6 +31,7 @@ class Game:
                 self.mousemoving = True
             elif event.type == pygame.KEYDOWN and event.key == pygame.K_ESCAPE:
                 self.state = MENU
+                self.menu.showlevels = False
                 self.level = None
 
     def draw_instr(self):
@@ -43,8 +44,9 @@ class Game:
         if self.state == MENU:
             self.state = self.menu.update(self.mousedown)
 
-            if self.state == LEVEL_RAND:
-                self.level = levels.Level()
+            if self.state == LEVEL_RAND or self.state == LEVEL_1 or self.state == LEVEL_2 \
+            or self.state == LEVEL_3 or self.state == LEVEL_4 or self.state == LEVEL_5:
+                self.level = levels.Level(self.state)
             elif self.state == EXIT:
                 pygame.quit()
                 sys.exit()

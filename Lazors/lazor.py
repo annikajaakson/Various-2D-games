@@ -36,9 +36,9 @@ class Ray:
 
 
 class Lazor:
-    def __init__(self):
-        self.spawn_location = [4, 3.5]
-        self.orig_direction = NE
+    def __init__(self, spawn_loc, orig_dir):
+        self.spawn_location = spawn_loc
+        self.orig_direction = orig_dir
         self.ray_array = [Ray(self.orig_direction, RAY_ENDLESS, self.spawn_location[0], self.spawn_location[1])]
         self.created = False
 

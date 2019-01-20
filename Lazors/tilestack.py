@@ -11,11 +11,23 @@ class Tilestack:
 
         pygame.font.init()
         self.font = pygame.font.SysFont('Arial', 40)
-        self.text = self.font.render(' ∞', False, TILE_OCCUPIED_COLOR)
-        if self.nr_of_tiles != None:
-            self.text = self.font.render(str(self.nr_of_tiles), False, TILE_OCCUPIED_COLOR)
+        self.text = self.font.render(' ∞', True, TILE_OCCUPIED_COLOR)
+        if self.nr_of_tiles is not None:
+            self.text = self.font.render(' ' + str(self.nr_of_tiles), True, TILE_OCCUPIED_COLOR)
+
+    def update(self):
+        if self.nr_of_tiles is None:
+            self.text = self.font.render(' ∞', True, TILE_OCCUPIED_COLOR)
+        else:
+            self.text = self.font.render(' ' + str(self.nr_of_tiles), True, TILE_OCCUPIED_COLOR)
 
     def draw(self, screen):
         stack = pygame.Rect(self.x, self.y, TILE_SIZE, TILE_SIZE)
-        pygame.draw.rect(screen, TILE_OCCUPIED_COLOR, stack)
+
+        if self.nr_of_tiles > 0:
+            stackcolor = TILE_OCCUPIED_COLOR
+        else:
+            stackcolor = TILE_UNOCCUPIED_COLOR
+
+        pygame.draw.rect(screen, stackcolor, stack)
         screen.blit(self.text, (self.x + TILE_SIZE, self.y))
