@@ -15,11 +15,11 @@ public class Piece{
 	int width = 0;
 	int cooldown = 300;
 	int heading = 90;
-	float on_screen_x = 0;
-	float on_screen_y = 0;
+	float on_screen_x = 0; // Detect if piece moves out of screen horizontally during rotation
+	float on_screen_y = 0; // Detect if piece moves out of screen vertically during rotation
 	boolean collides;
-	boolean left; //boolean to detect if piece can move left
-	boolean right; //boolean to detect if piece can move right
+	boolean left; // boolean to detect if piece can move left
+	boolean right; // boolean to detect if piece can move right
 	
 	public Rectangle rect;
 	
@@ -82,7 +82,7 @@ public class Piece{
 		}
 		
 		if (ip.isKeyDown(Input.KEY_DOWN)) { //adding extra speed when holding down key
-			cooldown -= 3;
+			cooldown -= 5;
 		}
 		
 		if (ip.isKeyPressed(Input.KEY_Z)) { //changing heading when pressing z key
@@ -108,7 +108,7 @@ public class Piece{
 				}
 			}
 		}
-
+		
 		cooldown -= 2;
 		object.clear();
 	}
@@ -157,19 +157,19 @@ public class Piece{
 		}
 		
 		for (Rectangle r : object) { //if piece moves out of screen during rotation, register its location
-			if (r.getX() < 0) {
+			if (r.getX() < 0) { //If piece moved out of the screen's left side
 				if (-((int)r.getX()) > on_screen_x) {
 					on_screen_x = -((int)r.getX());
 				}
 			}
 			
-			if (r.getMaxX() > Tetris.screenW) {
+			if (r.getMaxX() > Tetris.screenW) { //If piece moved out of the screen's right side
 				if (-((int)r.getMaxX()-Tetris.screenW) < on_screen_x) {
 					on_screen_x = -((int)r.getMaxX()-Tetris.screenW);
 				}
 			}
 			
-			if (r.getY() < 0) {
+			if (r.getY() < 0) { //If piece moved out of screen's upper side
 				if (-((int)r.getY()) > on_screen_y) {
 					on_screen_y = -((int)r.getY());
 				}

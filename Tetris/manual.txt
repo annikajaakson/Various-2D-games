@@ -1,0 +1,3 @@
+Tetris - no introduction needed.
+
+Rotate the pieces with Z, move left and right with arrow keys. Some additional speed moving downwards can be added with down key.

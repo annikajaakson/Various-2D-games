@@ -1,0 +1,6 @@
+Description:
+You control a green character who spawns outside of a maze. Move with WASD.
+Your objective is to get to the center of the maze and claim a green ball.
+The ball is guarded by red enemies, and as you get closer to the center, they get more and more packed.
+Lucikly, the enemies aren't very smart: their movement is quite random and you just have to be quick and plan your way to the center.
+Be careful though, once you collide with the enemy, the game is over.
