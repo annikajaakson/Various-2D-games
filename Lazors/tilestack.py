@@ -21,13 +21,15 @@ class Tilestack:
         else:
             self.text = self.font.render(' ' + str(self.nr_of_tiles), True, TILE_OCCUPIED_COLOR)
 
-    def draw(self, screen):
+    def draw(self, screen, tilepics):
         stack = pygame.Rect(self.x, self.y, TILE_SIZE, TILE_SIZE)
 
         if self.nr_of_tiles > 0:
-            stackcolor = TILE_OCCUPIED_COLOR
+            # stackcolor = TILE_OCCUPIED_COLOR
+            screen.blit(tilepics[0], (stack.x, stack.y))
         else:
-            stackcolor = TILE_UNOCCUPIED_COLOR
+            # stackcolor = TILE_UNOCCUPIED_COLOR
+            screen.blit(tilepics[1], (stack.x, stack.y))
 
-        pygame.draw.rect(screen, stackcolor, stack)
+        # pygame.draw.rect(screen, stackcolor, stack)
         screen.blit(self.text, (self.x + TILE_SIZE, self.y))

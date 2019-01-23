@@ -38,8 +38,9 @@ class FreeTile:
         self.tile.x = mouse_pos[0] - self.drag_offset[0]
         self.tile.y = mouse_pos[1] - self.drag_offset[1]
 
-    def draw(self, screen):
-        pygame.draw.rect(screen, TILE_OCCUPIED_COLOR, self.tile)
+    def draw(self, screen, tilepic):
+        # pygame.draw.rect(screen, TILE_OCCUPIED_COLOR, self.tile)
+        screen.blit(tilepic, (self.tile.x, self.tile.y))
 
 
 class Map:
@@ -48,6 +49,11 @@ class Map:
         self.freetile = None
         self.checkcoords = checkcoords
         self.checkpoints = []
+
+        self.empty_tile = pygame.image.load("emptytile.png")
+        self.occupied_tile = pygame.image.load("tile.png")
+        self.empty_tile_scaled = pygame.image.load("emptytile_scaled.png")
+        self.occupied_tile_scaled = pygame.image.load("tile_scaled.png")
 
         if checkcoords:
             for cp in checkcoords:
@@ -120,7 +126,8 @@ class Map:
                                 TILE_SIZE - TILE_GAP]
 
                 if self.grid[tile_y][tile_x] == 0:
-                    pygame.draw.rect(screen, TILE_UNOCCUPIED_COLOR, current_rect)
+                    # pygame.draw.rect(screen, TILE_UNOCCUPIED_COLOR, current_rect)
+                    screen.blit(self.empty_tile_scaled, (current_rect[0], current_rect[1]))
 
         # Draw checkpoints on screen
         for checkpoint in self.checkpoints:
@@ -137,8 +144,9 @@ class Map:
                                 TILE_SIZE - TILE_GAP]
 
                 if self.grid[tile_y][tile_x] == 1:
-                    pygame.draw.rect(screen, TILE_OCCUPIED_COLOR, current_rect)
+                    # pygame.draw.rect(screen, TILE_OCCUPIED_COLOR, current_rect)
+                    screen.blit(self.occupied_tile_scaled, (current_rect[0], current_rect[1]))
 
         # Draw the tile being held if it exists
         if self.freetile:
-            self.freetile.draw(screen)
+            self.freetile.draw(screen, self.occupied_tile)

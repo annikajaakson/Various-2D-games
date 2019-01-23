@@ -77,7 +77,7 @@ class Ornaments:
         # Slow down if W or UP is released
         elif event.type == pygame.KEYUP:
             if event.key == pygame.K_w or event.key == pygame.K_UP:
-                self.speed = 2
+                self.speed -= 5
 
     def update(self): # a bit ugly
         # Control
@@ -98,4 +98,5 @@ class Ornaments:
                 self.y = 0 - self.size/2
 
         self.y += self.speed
+        self.speed += 0.001
         self.rotation += 0.05

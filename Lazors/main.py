@@ -15,6 +15,9 @@ class Game:
         self.screen = pygame.display.set_mode([SCREEN_W, SCREEN_H])
         pygame.display.set_caption("Lazors")
 
+        self.menu_bg = pygame.image.load("bg_start.png")
+        self.bg = pygame.image.load("bg.png")
+
         self.mousedown = False
         self.mousemoving = False
 
@@ -56,13 +59,16 @@ class Game:
             self.level.update(self.mousedown)
 
     def draw(self):
-        self.screen.fill(BG_COLOR)
+        # self.screen.fill(BG_COLOR)
 
         if self.state == MENU:
+            self.screen.blit(self.menu_bg, (0, 0))
             self.menu.draw(self.screen)
         elif self.state == INSTR:
+            self.screen.blit(self.menu_bg, (0, 0))
             self.draw_instr()
         else:
+            self.screen.blit(self.bg, (0, 0))
             self.level.draw(self.screen)
 
     def run(self):

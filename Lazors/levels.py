@@ -10,9 +10,9 @@ class Menu:
         self.play = [MENU_START[0], MENU_START[1]]
         self.instr = [MENU_START[0], MENU_START[1] + MENU_BUTTON_H + MENU_BUTTON_GAP]
         self.exit = [MENU_START[0], MENU_START[1] + MENU_BUTTON_H * 2 + MENU_BUTTON_GAP * 2]
-        self.playimg = pygame.image.load("playbutton.png")
-        self.instrimg = pygame.image.load("instrbutton.png")
-        self.exitimg = pygame.image.load("exitbutton.png")
+        self.playimg = pygame.image.load("mangbutton.png")
+        self.instrimg = pygame.image.load("juhendbutton.png")
+        self.exitimg = pygame.image.load("valjubutton.png")
 
         self.showlevels = False
         self.cooldown = 10
@@ -97,13 +97,16 @@ class Level:
             self.lazor = lazor.Lazor(LVLRAND["LAZOR_SPAWN"], LVLRAND["LAZOR_DIR"])
             self.tilestack = tilestack.Tilestack()
 
+        self.empty_tile = pygame.image.load("emptytile.png")
+        self.occupied_tile = pygame.image.load("tile.png")
+
     def update(self, mousedown):
         self.tilemap.update(mousedown, self.lazor, self.tilestack)
         self.lazor.update(self.tilemap)
         self.tilestack.update()
 
     def draw(self, screen):
-        self.tilestack.draw(screen)
+        self.tilestack.draw(screen, (self.occupied_tile, self.empty_tile))
         self.tilemap.draw_grid(screen)
         self.lazor.draw(screen)
         self.tilemap.draw_tiles(screen)

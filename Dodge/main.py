@@ -7,7 +7,7 @@ from random import randint
 
 # Create map and player
 basemap = [maps.Basemap(0, 0, BASEWIDTH, SCREEN[1], GREEN), maps.Basemap(SCREEN[0]-BASEWIDTH, 0, BASEWIDTH, SCREEN[1], GREEN)]
-ornaments = [maps.Ornaments(BASEWIDTH, 0, randint(1, 4), GREEN),
+ornaments = [maps.Ornaments(BASEWIDTH, 0, 1, GREEN),
              maps.Ornaments(BASEWIDTH, 215, randint(1, 4), GREEN),
              maps.Ornaments(BASEWIDTH, 430, randint(1, 4), GREEN)]
 player = player.Player(PLAYER_X, PLAYER_Y, YELLOW)
