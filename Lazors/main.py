@@ -18,6 +18,8 @@ class Game:
         self.menu_bg = pygame.image.load("bg_start.png")
         self.bg = pygame.image.load("bg.png")
 
+        self.sprites = pygame.sprite.Group()
+
         self.mousedown = False
         self.mousemoving = False
 
@@ -63,7 +65,7 @@ class Game:
 
         if self.state == MENU:
             self.screen.blit(self.menu_bg, (0, 0))
-            self.menu.draw(self.screen)
+            self.menu.draw(self.screen, self.sprites)
         elif self.state == INSTR:
             self.screen.blit(self.menu_bg, (0, 0))
             self.draw_instr()

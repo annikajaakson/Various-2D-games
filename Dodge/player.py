@@ -13,10 +13,11 @@ class Player():
         self.direction = 0
         self.lives = 1
         self.collided = False
+        self.img = pygame.image.load("player.png")
 
     def draw(self, screen):
         self.shape = pygame.Rect([self.x, self.y, PLAYER_SIZE, PLAYER_SIZE])
-        pygame.draw.rect(screen, self.color, self.shape)
+        screen.blit(self.img, (self.x, self.y))
 
     def event_handle(self, event):
         # Change direction if A/LEFT or D/RIGHT is pressed

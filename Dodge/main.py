@@ -7,8 +7,8 @@ from random import randint
 
 # Create map and player
 basemap = [maps.Basemap(0, 0, BASEWIDTH, SCREEN[1], GREEN), maps.Basemap(SCREEN[0]-BASEWIDTH, 0, BASEWIDTH, SCREEN[1], GREEN)]
-ornaments = [maps.Ornaments(BASEWIDTH, 0, 1, GREEN),
-             maps.Ornaments(BASEWIDTH, 215, randint(1, 4), GREEN),
+ornaments = [maps.Ornaments(BASEWIDTH, 0, randint(1, 4), GREEN),
+             maps.Ornaments(BASEWIDTH, 215, 1, GREEN),
              maps.Ornaments(BASEWIDTH, 430, randint(1, 4), GREEN)]
 player = player.Player(PLAYER_X, PLAYER_Y, YELLOW)
 
@@ -19,6 +19,11 @@ if __name__ == '__main__':
     pygame.init()
 
     screen = pygame.display.set_mode(SCREEN)
+
+    clock = pygame.time.Clock()
+
+    bg = pygame.image.load("bg.png")
+    lose = pygame.image.load("gameover.png")
 
     while True:
         # Handle events
@@ -34,7 +39,7 @@ if __name__ == '__main__':
             player.event_handle(event)
 
         # Update and draw everything on screen
-        screen.fill(BLUE)
+        screen.blit(bg, (0, 0))
 
         for piece in basemap:
             piece.draw(screen)
@@ -60,10 +65,10 @@ if __name__ == '__main__':
         if player.lives <= 0:
             if lose_counter <= 256:
                 # TODO: You lost screen
-                screen.fill(RED, [10, 10, 50, 50])
+                screen.blit(lose, (SCREEN[0] / 2 - 100, SCREEN[1] / 2 - 100))
             lose_screen.fill(WHITE)
             screen.blit(lose_screen, (0, 0))
 
         # Show updates on screen
         pygame.display.flip()
-        pygame.time.wait(16)
+        clock.tick(60)

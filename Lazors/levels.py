@@ -60,7 +60,7 @@ class Menu:
                 self.cooldown -= 1
             return MENU
 
-    def draw(self, screen):
+    def draw(self, screen, sprites):
         if self.showlevels:
             for i, lvl_img in enumerate(self.level_images):
                 screen.blit(lvl_img, self.level_image_locs[i])

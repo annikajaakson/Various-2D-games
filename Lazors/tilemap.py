@@ -9,6 +9,7 @@ class Checkpoint:
         self.location = grid_to_pixel([x, y])
         self.passed = False
         self.color = CHECKPOINT_COLOR
+        self.dot_color = DOT_COLOR
 
     def draw(self, screen):
         pygame.draw.circle(screen,
@@ -49,11 +50,24 @@ class Map:
         self.freetile = None
         self.checkcoords = checkcoords
         self.checkpoints = []
+        self.sprites = pygame.sprite.Group()
 
         self.empty_tile = pygame.image.load("emptytile.png")
         self.occupied_tile = pygame.image.load("tile.png")
         self.empty_tile_scaled = pygame.image.load("emptytile_scaled.png")
         self.occupied_tile_scaled = pygame.image.load("tile_scaled.png")
+
+        for tile_y in range(GRID_H):
+            for tile_x in range(GRID_W):
+                # Locate current rectangle according to TILE_START and x & y coordinates
+                current_rect = [TILE_START[0] + TILE_SIZE * tile_x + TILE_GAP / 2,
+                                TILE_START[1] + TILE_SIZE * tile_y + TILE_GAP / 2,
+                                TILE_SIZE - TILE_GAP,
+                                TILE_SIZE - TILE_GAP]
+                sprite = pygame.sprite.Sprite()
+                sprite.image = self.empty_tile_scaled
+                sprite.rect = current_rect
+                self.sprites.add(sprite)
 
         if checkcoords:
             for cp in checkcoords:
@@ -116,18 +130,7 @@ class Map:
             self.freetile.update()
 
     def draw_grid(self, screen):
-        # Draw unoccupied tiles on screen
-        for tile_y in range(GRID_H):
-            for tile_x in range(GRID_W):
-                # Locate current rectangle according to TILE_START and x & y coordinates
-                current_rect = [TILE_START[0] + TILE_SIZE * tile_x + TILE_GAP / 2,
-                                TILE_START[1] + TILE_SIZE * tile_y + TILE_GAP / 2,
-                                TILE_SIZE - TILE_GAP,
-                                TILE_SIZE - TILE_GAP]
-
-                if self.grid[tile_y][tile_x] == 0:
-                    # pygame.draw.rect(screen, TILE_UNOCCUPIED_COLOR, current_rect)
-                    screen.blit(self.empty_tile_scaled, (current_rect[0], current_rect[1]))
+        self.sprites.draw(screen)
 
         # Draw checkpoints on screen
         for checkpoint in self.checkpoints:
