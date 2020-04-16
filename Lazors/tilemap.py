@@ -91,11 +91,12 @@ class Map:
             and self.grid[int(mouse_pos_grid[1])][int(mouse_pos_grid[0])] != 0:
                 self.grid[int(mouse_pos_grid[1])][int(mouse_pos_grid[0])] = 0
                 self.freetile = FreeTile(mouse_pos_pixel, fromstack=False)
-            elif tilestack.nr_of_tiles > 0 \
+            elif (tilestack.nr_of_tiles is None or tilestack.nr_of_tiles > 0) \
             and tilestack.x < mouse_pos_pixel[0] < tilestack.x + TILE_SIZE \
             and tilestack.y < mouse_pos_pixel[1] < tilestack.y + TILE_SIZE:
                 self.freetile = FreeTile(mouse_pos_pixel, fromstack=True)
-                tilestack.nr_of_tiles -= 1
+                if tilestack.nr_of_tiles is not None:
+                    tilestack.nr_of_tiles -= 1
 
         # If mouse is released and the free tile is being held
         elif not mousedown:
@@ -104,7 +105,8 @@ class Map:
 
                 if self.freetile.fromstack \
                 and (tile_pos[0] < 0 or tile_pos[0] > GRID_W or tile_pos[1] < 0 or tile_pos[1] > GRID_H):
-                    tilestack.nr_of_tiles += 1
+                    if tilestack.nr_of_tiles is not None:
+                        tilestack.nr_of_tiles += 1
                 else:
                     if (tile_pos[0] < 0 or tile_pos[0] > GRID_W or tile_pos[1] < 0 or tile_pos[1] > GRID_H) \
                     or self.grid[int(tile_pos[1])][int(tile_pos[0])] != 0:

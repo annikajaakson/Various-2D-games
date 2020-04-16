@@ -24,7 +24,7 @@ class Tilestack:
     def draw(self, screen, tilepics):
         stack = pygame.Rect(self.x, self.y, TILE_SIZE, TILE_SIZE)
 
-        if self.nr_of_tiles > 0:
+        if self.nr_of_tiles is None or self.nr_of_tiles > 0:
             # stackcolor = TILE_OCCUPIED_COLOR
             screen.blit(tilepics[0], (stack.x, stack.y))
         else:
