@@ -2,72 +2,69 @@ package Packtris;
 
 import org.newdawn.slick.*;
 import org.newdawn.slick.geom.*;
-import java.util.ArrayList;
+import java.util.List;
 
 public class Piece{
-	float x;
-	float y;
-	int id;
-	ArrayList<Rectangle> object;
-	ArrayList<ArrayList> maplist;
-	
-	int height = 0;
-	int width = 0;
-	int cooldown = 300;
-	int heading = 90;
-	float on_screen_x = 0; // Detect if piece moves out of screen horizontally during rotation
-	float on_screen_y = 0; // Detect if piece moves out of screen vertically during rotation
-	boolean collides;
-	boolean left; // boolean to detect if piece can move left
-	boolean right; // boolean to detect if piece can move right
+	private int id;
+	private float x;
+	private float y;
+	private int height = 0;
+	private int width = 0;
+	private int heading = 90;
+
+	private List<Rectangle> object;
+	private List<List<Integer>> maplist;
+
+	private int cooldown = 300;
+	private float on_screen_x = 0; // Detect if piece moves out of screen horizontally during rotation
+	private float on_screen_y = 0; // Detect if piece moves out of screen vertically during rotation
+	private boolean collides;
+	private boolean left; // boolean to detect if piece can move left
+	private boolean right; // boolean to detect if piece can move right
 	
 	public Rectangle rect;
 	
-	public Piece(float _x, float _y, int _id, ArrayList<Rectangle> _object, ArrayList<ArrayList> _maplist) {
-		x = _x;
-		y = _y;
-		id = _id;
-		object = _object;
-		maplist = _maplist;
+	public Piece(float _x, float _y, int _id, List<Rectangle> _object, List<List<Integer>> _maplist) {
+		this.x = _x;
+		this.y = _y;
+		this.id = _id;
+		this.object = _object;
+		this.maplist = _maplist;
 	}
 	
 	public boolean collide() { //function to detect collision with other pieces and the ground
 		for (Rectangle r : object) {
-			if ((int)r.getMaxY()/Tetris.block<30) { //checks if the rectangle is still on screen
-				if (maplist.get((int)r.getMaxY()/Tetris.block).get((int)r.getX()/Tetris.block) != "0") { //checks if the future position is vacant
+			if ((int) r.getMaxY() / Tetris.block < 30) { //checks if the rectangle is still on screen
+				if (maplist.get((int)r.getMaxY() / Tetris.block).get((int)r.getX() / Tetris.block) != 0) { //checks if the future position is vacant
 					collides = true;
 				}
 			}
 			
-			if ((int)r.getMaxY()/Tetris.block >= 30) { //checks collision with the floor
+			if ((int)r.getMaxY() / Tetris.block >= 30) { //checks collision with the floor
 				collides = true;
 			}
 		}
-		
-		if (collides) {
-			return true;
-		} else {
-			return false;
-		}
+
+		return collides;
 	}
 	
 	public void update(GameContainer gc, int delta) {
 		Input ip = gc.getInput();
 
-		if (cooldown <= 0 && Tetris.stop == false && collide() == false) { //falling downwards if collision not detected
+		if (cooldown <= 0 && !Tetris.stop && !collide()) { //falling downwards if collision not detected
 			y += 1;
 			cooldown = 300;
 		}
 		
 		for (Rectangle r : object) { //checks if the piece is still on screen
-			if (r.getX() > 0 && maplist.get((int)r.getY()/Tetris.block).get((int)r.getX()/Tetris.block-1) == "0") { //minimum r.getX() is zero
+			if (r.getX() > 0 && maplist.get((int)r.getY()/Tetris.block).get((int)r.getX()/Tetris.block-1) == 0) { //minimum r.getX() is zero
 				left = true;
 			} else { //if a rectangle in piece is found out of screen, break and return false
 				left = false;
 				break;
 			}
 			
-			if (r.getMaxX() < Tetris.screenW && maplist.get((int)r.getY()/Tetris.block).get((int)r.getX()/Tetris.block+1) == "0") { //maximum r.getMaxX() is equal to screen width
+			if (r.getMaxX() < Tetris.screenW && maplist.get((int)r.getY()/Tetris.block).get((int)r.getX()/Tetris.block+1) == 0) { //maximum r.getMaxX() is equal to screen width
 				right = true;
 			} else { //if a rectangle in piece is found out of screen, break and return false
 				right = false;
@@ -75,9 +72,9 @@ public class Piece{
 			}
 		}
 		
-		if (ip.isKeyPressed(Input.KEY_LEFT) && left == true) { //moving horizontally if piece remains on screen
+		if (ip.isKeyPressed(Input.KEY_LEFT) && left) { //moving horizontally if piece remains on screen
 			x -= 1;
-		} else if (ip.isKeyPressed(Input.KEY_RIGHT) && right == true) {
+		} else if (ip.isKeyPressed(Input.KEY_RIGHT) && right) {
 			x += 1;
 		}
 		
@@ -92,18 +89,18 @@ public class Piece{
 			}
 		}
 		
-		if (collide() == true) { //stopping at the bottom/on other pieces and writing pieces to the map
+		if (collide()) { //stopping at the bottom/on other pieces and writing pieces to the map
 			Tetris.stop = true;
 			for (Rectangle r : object) {
 				if ((int)r.getY()/Tetris.block < 30) {
 					if (id == 0) {
-						maplist.get((int)r.getY()/Tetris.block).set((int)r.getX()/Tetris.block, "1");
+						maplist.get((int)r.getY()/Tetris.block).set((int)r.getX()/Tetris.block, 1);
 					} else if (id == 1) {
-						maplist.get((int)r.getY()/Tetris.block).set((int)r.getX()/Tetris.block, "2");
+						maplist.get((int)r.getY()/Tetris.block).set((int)r.getX()/Tetris.block, 2);
 					} else if (id == 2) {
-						maplist.get((int)r.getY()/Tetris.block).set((int)r.getX()/Tetris.block, "3");
+						maplist.get((int)r.getY()/Tetris.block).set((int)r.getX()/Tetris.block, 3);
 					} else if (id == 3) {
-						maplist.get((int)r.getY()/Tetris.block).set((int)r.getX()/Tetris.block, "4");
+						maplist.get((int)r.getY()/Tetris.block).set((int)r.getX()/Tetris.block, 4);
 					}
 				}
 			}

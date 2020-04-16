@@ -3,54 +3,53 @@ package Packtris;
 import org.newdawn.slick.*;
 import org.newdawn.slick.geom.*;
 import java.util.ArrayList;
+import java.util.List;
 
 public class Map {
-	ArrayList<ArrayList> maplist; // Dynamic size list to hold map structure
-	public int count = 0;
-	public boolean full;
-	public int disappear; //probably not necessary
+	private List<List<Integer>> maplist; // Dynamic size list to hold map structure
+	private boolean full;
 	
 	// Initialize map
-	public Map(ArrayList<ArrayList> _maplist) {
+	public Map(List<List<Integer>> _maplist) {
 		maplist = _maplist;
-		for (int i = 0; i < Tetris.screenH/Tetris.block; i++){
-			ArrayList<String> list_item = new ArrayList<>(20);
+		for (int i = 0; i < Tetris.screenH / Tetris.block; i++){
+			ArrayList<Integer> list_item = new ArrayList<>(Tetris.screenW / Tetris.block);
 			for (int a = 0; a < 20; a++) {
-				list_item.add("0");
+				list_item.add(0);
 			}
 			maplist.add(list_item);
 		}
 	}
 	
 	public void update(GameContainer gc, int delta) {
-		for (int a = 0; a < maplist.size(); a++) { //makes full rows disappear
-			for (int i = 0; i < maplist.get(a).size(); i++) {
-				if (maplist.get(a).get(i) == "0") {
+		for (int row = 0; row < maplist.size(); row++) { //makes full rows disappear
+			for (int column = 0; column < maplist.get(row).size(); column++) {
+				if (maplist.get(row).get(column) == 0) {
 					full = false;
+					break;
 				}
 			}
 			
 			// Clear a full row
-			if (full == true) {
-				for (int i = 0; i < maplist.get(a).size(); i++) {
-					maplist.get(a).set(i, "0");
-				}
-				disappear = a; //unnecessary variable
-				
-				for (int k = 0; k < disappear; k++) { //makes pieces fall after a row disappears
-					maplist.set(disappear-k, maplist.get(disappear-k-1));
+			if (full) {
+				for (int column = 0; column < maplist.get(row).size(); column++) {
+					maplist.get(row).set(column, 0);
 				}
 				
-				for (int i = 0; i < maplist.get(0).size(); i++) { //makes first row empty after disappearance of a row
-					maplist.get(0).set(i, "0");
+				for (int k = 0; k < row; k++) { //makes pieces fall after a row disappears
+					maplist.set(row-k, maplist.get(row-k-1));
+				}
+				
+				for (int col = 0; col < maplist.get(0).size(); col++) { //makes first row empty after disappearance of a row
+					maplist.get(0).set(col, 0);
 				}
 				
 			}
 			full = true;
 		}
 		
-		for (int c = 0; c < maplist.get(0).size(); c++) { //if a piece is written to top row, the game window closes
-			if (maplist.get(0).get(c) != "0") {
+		for (int col = 0; col < maplist.get(0).size(); col++) { //if a piece is written to top row, the game window closes
+			if (maplist.get(0).get(col) != 0) {
 				System.out.println("GAME OVER");
 				System.exit(0);
 			}
@@ -61,15 +60,15 @@ public class Map {
 		// Draw map to screen, rectangle by rectangle
 		for (int i = 0; i<maplist.size(); i++) {
 			for (int a = 0; a<20; a++) {
-				if (maplist.get(i).get(a) == "0") {
+				if (maplist.get(i).get(a) == 0) {
 					g.setColor(new Color(0, 0, 0));
-				} else if (maplist.get(i).get(a) == "1") {
+				} else if (maplist.get(i).get(a) == 1) {
 					g.setColor(new Color(255, 0, 0));
-				} else if (maplist.get(i).get(a) == "2") {
+				} else if (maplist.get(i).get(a) == 2) {
 					g.setColor(new Color(255, 255, 0));
-				} else if (maplist.get(i).get(a) == "3") {
+				} else if (maplist.get(i).get(a) == 3) {
 					g.setColor(new Color(0, 255, 0));
-				} else if (maplist.get(i).get(a) == "4") {
+				} else if (maplist.get(i).get(a) == 4) {
 					g.setColor(new Color(0, 0, 255));
 				}
 				g.fill(new Rectangle(a*Tetris.block, i*Tetris.block, Tetris.block, Tetris.block));
